@@ -109,7 +109,7 @@ saveBtn.addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
-// 🔁 SPIELSTAND LADEN
+// Spielstand Laden Unsicher
 loadInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -119,16 +119,14 @@ loadInput.addEventListener("change", (e) => {
     try {
       const data = JSON.parse(event.target.result);
 
-      // ⚠️ Keine Validierung – absichtlich "unsicher"
+      //  Keine Validierung – absichtlich "unsicher"
       if (!Array.isArray(data.board) || data.board.length !== 9) {
         alert("Ungültige Datei.");
         return;
       }
 
-      // Spiel zurücksetzen
       resetGame();
 
-      // Daten anwenden
       data.board.forEach((val, i) => {
         boxes[i].innerText = val;
         boxes[i].disabled = val !== "";
