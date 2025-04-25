@@ -99,3 +99,25 @@ button.auth-btn {
   margin: 5px;
   padding: 8px 20px;
 }
+
+#save-btn
+{
+  padding: 1rem;
+  margin: 0.5rem;
+  font-size: 1rem;
+  background-color: #191913;
+  color: #fff;
+  border-radius: 1rem;
+  border: none;
+}
+
+#load-input
+{
+  padding: 1rem;
+  margin: 0.5rem;
+  font-size: 1rem;
+  background-color: #191913;
+  color: #fff;
+  border-radius: 1rem;
+  border: none;
+}

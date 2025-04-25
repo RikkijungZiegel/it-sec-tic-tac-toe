@@ -55,8 +55,6 @@ function showMessage(text, color) {
 }
 
 function showGameUI() {
-    // Direkt das Auth-Formular ausblenden
     document.getElementById("auth").style.display = "none"; 
-    // Das Spiel sichtbar machen
     document.getElementById("game-ui").style.display = "block";
   }

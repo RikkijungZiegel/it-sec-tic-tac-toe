@@ -87,27 +87,66 @@ const checkWinner = () => {
   }
 };
 
-async function saveGame(gameState) {
-  const response = await fetch('/save-game', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(gameState), // Sende den aktuellen Spielstand
-  });
+const saveBtn = document.getElementById("save-btn");
+const loadInput = document.getElementById("load-input");
 
-  const data = await response.text();
-  console.log(data); // "Spiel gespeichert"
-}
+// 💾 SPIELSTAND SPEICHERN
+saveBtn.addEventListener("click", () => {
+  const gameData = {
+    board: Array.from(boxes).map(box => box.innerText),
+    turnO: turnO,
+    count: count
+  };
 
-async function loadGame() {
-  const response = await fetch('/load-game');
-  const gameState = await response.json();
-  
-  // Nun kannst du das Spiel mit dem geladenen Zustand fortsetzen
-  console.log(gameState);
-  // Zum Beispiel: Das Spielfeld und der aktuelle Spieler
-}
+  const blob = new Blob([JSON.stringify(gameData)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "autosave.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
+
+// 🔁 SPIELSTAND LADEN
+loadInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    try {
+      const data = JSON.parse(event.target.result);
+
+      // ⚠️ Keine Validierung – absichtlich "unsicher"
+      if (!Array.isArray(data.board) || data.board.length !== 9) {
+        alert("Ungültige Datei.");
+        return;
+      }
+
+      // Spiel zurücksetzen
+      resetGame();
+
+      // Daten anwenden
+      data.board.forEach((val, i) => {
+        boxes[i].innerText = val;
+        boxes[i].disabled = val !== "";
+      });
+
+      turnO = data.turnO;
+      count = data.count;
+
+    } catch (err) {
+      alert("Fehler beim Laden: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+
+
+
 
 newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
