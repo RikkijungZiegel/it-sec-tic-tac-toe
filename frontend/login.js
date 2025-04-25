@@ -55,6 +55,8 @@ function showMessage(text, color) {
 }
 
 function showGameUI() {
-  document.getElementById("auth").classList.add("hide");
-  document.getElementById("game-ui").classList.remove("hide");
-}
+    // Direkt das Auth-Formular ausblenden
+    document.getElementById("auth").style.display = "none"; 
+    // Das Spiel sichtbar machen
+    document.getElementById("game-ui").style.display = "block";
+  }
