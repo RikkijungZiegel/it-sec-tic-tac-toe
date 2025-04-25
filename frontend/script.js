@@ -87,5 +87,27 @@ const checkWinner = () => {
   }
 };
 
+async function saveGame(gameState) {
+  const response = await fetch('/save-game', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(gameState), // Sende den aktuellen Spielstand
+  });
+
+  const data = await response.text();
+  console.log(data); // "Spiel gespeichert"
+}
+
+async function loadGame() {
+  const response = await fetch('/load-game');
+  const gameState = await response.json();
+  
+  // Nun kannst du das Spiel mit dem geladenen Zustand fortsetzen
+  console.log(gameState);
+  // Zum Beispiel: Das Spielfeld und der aktuelle Spieler
+}
+
 newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);

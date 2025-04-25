@@ -64,6 +64,30 @@ app.post("/login", async (req, res) => {
   res.status(200).json({ message: "Login erfolgreich" });
 });
 
+// Speichern des Spiels
+app.post('/save-game', (req, res) => {
+  const gameState = req.body; // Das Spiel-Objekt vom Client
+
+  // Speichern des Spiels in einer Datei
+  fs.writeFile('backend/gameState.json', JSON.stringify(gameState), (err) => {
+    if (err) {
+      return res.status(500).send('Fehler beim Speichern des Spiels');
+    }
+    res.send('Spiel gespeichert');
+  });
+});
+
+// Laden des Spiels
+app.get('/load-game', (req, res) => {
+  fs.readFile('backend/gameState.json', 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).send('Fehler beim Laden des Spiels');
+    }
+    const gameState = JSON.parse(data);
+    res.json(gameState);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
 });
