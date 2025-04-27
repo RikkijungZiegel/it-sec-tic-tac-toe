@@ -90,7 +90,7 @@ const checkWinner = () => {
 const saveBtn = document.getElementById("save-btn");
 const loadInput = document.getElementById("load-input");
 
-// 💾 SPIELSTAND SPEICHERN
+//Save game
 saveBtn.addEventListener("click", () => {
   const gameData = {
     board: Array.from(boxes).map(box => box.innerText),
@@ -109,7 +109,7 @@ saveBtn.addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
-// Spielstand Laden Unsicher
+//Load saved game
 loadInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -119,7 +119,6 @@ loadInput.addEventListener("change", (e) => {
     try {
       const data = JSON.parse(event.target.result);
 
-      //  Keine Validierung – absichtlich "unsicher"
       if (!Array.isArray(data.board) || data.board.length !== 9) {
         alert("Ungültige Datei.");
         return;
@@ -135,16 +134,18 @@ loadInput.addEventListener("change", (e) => {
       turnO = data.turnO;
       count = data.count;
 
+    let winnerFound = checkWinner();
+
+    if (count === 9 && !winnerFound) {
+      gameDraw();
+    }
+
     } catch (err) {
       alert("Fehler beim Laden: " + err.message);
     }
   };
   reader.readAsText(file);
 });
-
-
-
-
 
 newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
